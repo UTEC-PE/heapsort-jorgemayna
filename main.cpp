@@ -13,6 +13,7 @@ mt19937 rng;
 int generateRandomInt(int min, int max);
 void printArray(int *array, size_t size);
 void heapsort(int* array, size_t size);
+bool validate(int* array, size_t size);
 
 int main(int argc, char *argv[]) {
     rng.seed(random_device()());
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]) {
     printArray(numbers, numberOfElements);
     heapsort(numbers, numberOfElements);
     printArray(numbers, numberOfElements);
+    assert(validate(numbers, numberOfElements) && "The sort is not ordering all the elements");
 
     system("read");
     return EXIT_SUCCESS;
@@ -48,4 +50,13 @@ void printArray(int *array, size_t size) {
 
 void heapsort(int* array, size_t size) {
     // TODO
+}
+
+bool validate(int* array, size_t size) {
+    for (int i = 0; i < size - 1; i++) {
+        if (array[i] > array[i + 1]) {
+            return false;
+        }
+    }
+    return true;
 }
