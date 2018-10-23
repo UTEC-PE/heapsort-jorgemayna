@@ -6,7 +6,7 @@
 using namespace std;
 
 #define MIN 100
-#define MAX 500
+#define MAX 400
 
 mt19937 rng;
 
@@ -35,9 +35,30 @@ int main(int argc, char *argv[]) {
     system("read");
     return EXIT_SUCCESS;
 }
+void max_heapify(int** array,size_t size,int pos){
+    int l=0,r=0;
+    if((2*pos+1)<size){
+        l=(*array)[2*pos+1];
+    }
+    if((2*pos+2)<size){
+        r=(*array)[2*pos+2];
+    }
+    if(l>(*array)[pos] || r>(*array)[pos]) {
+        int temp = (*array)[pos];
+        if(l <= r){
+            (*array)[pos]=r;
+            (*array)[2*pos+2]=temp;
+            max_heapify(&(*array),size,2*pos+2);
+        }else{
+            (*array)[pos]=l;
+            (*array)[2*pos+1]=temp;
+            max_heapify(&(*array),size,2*pos+1);
+        }
+    }
+}
 
 int generateRandomInt(int min, int max) {
-    uniform_int_distribution<mt19937::result_type> distribution(min, max); 
+    uniform_int_distribution<mt19937::result_type> distribution(min, max);
     return distribution(rng);
 }
 
@@ -50,6 +71,14 @@ void printArray(int *array, size_t size) {
 
 void heapsort(int* array, size_t size) {
     // TODO
+    for(int j=size;j>1;j--){
+        for(int i=(j/2)-1;i>=0;i--){
+            max_heapify(&array,j,i);
+        }
+        int tem=array[0];
+        array[0]=array[j-1];
+        array[j-1]=tem;
+    }
 }
 
 bool validate(int* array, size_t size) {
